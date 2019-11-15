@@ -1,2 +1,30 @@
 {
+    "name": "rerootagency/lareroot-socket-io",
+    "description": "Laravel pusher client for reroot-socket-io server.",
+    "autoload": {
+        "psr-4": {
+            "RerootAgency\\LaReRootSocketIO\\": "src/",
+            "RerootAgency\\LaReRootSocketIO\\Database\\Seeds\\": "database/seeds/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "require": {
+        "illuminate/support": "5.5.*",
+        "illuminate/contracts": "5.5.*",
+        "predis/predis": "^1.1",
+        "firebase/php-jwt": "^5.0",
+        "jenssegers/mongodb": "3.3.*"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RerootAgency\\LaReRootSocketIO\\ServiceProvider"
+            ]
+        },
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    }
 }
