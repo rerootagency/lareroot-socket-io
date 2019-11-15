@@ -17,6 +17,11 @@ class Publisher
         array $payload,
         bool $force_ack = true
     ) {
+        if($channel->type != Channel::NOTIFICATION_TYPE) {
+
+            throw new \Exception('Channel must be of "'.Channel::NOTIFICATION_TYPE.'" type.');
+        }
+
         $time = time();
 
         $message_id = uuid();
@@ -27,7 +32,7 @@ class Publisher
             ],
             'channel' => [
                 'channel'=> $channel->channel,
-                'message_type' => Channel::NOTIFICATION_TYPE,
+                'message_type' => $channel->type,
                 'data'=> [
                     'key' => $channel->key
                 ]
@@ -74,7 +79,7 @@ class Publisher
             ],
             'channel' => [
                 'channel'=> $endpoint->endpoint,
-                'message_type' => Channel::ENDPOINT_TYPE,
+                'message_type' => Endpoint::MESSAGE_TYPE,
                 'data' => null
             ],
             'message_id' => $message_id,
@@ -104,6 +109,11 @@ class Publisher
         array $payload,
         bool $force_ack = true
     ) {
+        if($channel->type != Channel::CONVERSATION_TYPE) {
+
+            throw new \Exception('Channel must be of "'.Channel::CONVERSATION_TYPE.'" type.');
+        }
+
         $time = time();
 
         $message_id = uuid();
@@ -125,7 +135,7 @@ class Publisher
             ],
             'channel' => [
                 'channel'=> $channel->channel,
-                'message_type' => Channel::CONVERSATION_TYPE,
+                'message_type' => $channel->type,
                 'data' => [
                     'conversation_name' => $channel->name,
                     'from_user' => $user->name,
