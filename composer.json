@@ -22,9 +22,6 @@
             "providers": [
                 "RerootAgency\\LaReRootSocketIO\\ServiceProvider"
             ]
-        },
-        "branch-alias": {
-            "dev-master": "0.0-dev"
         }
     }
 }
