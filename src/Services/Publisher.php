@@ -15,6 +15,7 @@ class Publisher
     public function publishNotification(
         Channel $channel,
         array $payload,
+        array $exclude = [],
         bool $force_ack = true
     ) {
         if($channel->type != Channel::NOTIFICATION_TYPE) {
@@ -28,7 +29,7 @@ class Publisher
 
         $data = [
             'meta' => [
-                'exclude' => []
+                'exclude' => $exclude
             ],
             'channel' => [
                 'channel'=> $channel->channel,
@@ -44,8 +45,13 @@ class Publisher
         ];
 
         if($force_ack) {
-            $insert = ChannelEndpoint::where('channel', $channel->channel)
-                ->get()
+            $insert_builder = ChannelEndpoint::where('channel', $channel->channel);
+
+            if(!empty($builder)) {
+                $insert_builder = $insert_builder->whereNotIn('endpoint', $exclude);
+            }
+
+            $insert = $insert_builder->get()
                 ->map(function($item) use ($time, $data, $message_id) {
                     return [
                         'message_id' => $message_id,
@@ -148,8 +154,13 @@ class Publisher
         ];
 
         if($force_ack) {
-            $insert = ChannelEndpoint::where('channel', $channel->channel)
-                ->get()
+            $insert_builder = ChannelEndpoint::where('channel', $channel->channel);
+
+            if(!empty($source_endpoint)) {
+                $insert_builder = $insert_builder->where('endpoint', '!=', $source_endpoint);
+            }
+
+            $insert = $insert_builder->get()
                 ->map(function($item) use ($time, $data, $message_id) {
                     return [
                         'message_id' => $message_id,
