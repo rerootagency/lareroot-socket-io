@@ -47,7 +47,7 @@ class Publisher
         if($force_ack) {
             $insert_builder = ChannelEndpoint::where('channel', $channel->channel);
 
-            if(!empty($builder)) {
+            if(!empty($exclude)) {
                 $insert_builder = $insert_builder->whereNotIn('endpoint', $exclude);
             }
 
