@@ -14,9 +14,9 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/config.php' => config_path(self::SIGNATURE.'.php'),
-        ], self::SIGNATURE.'-config');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        $this->bootPublisher();
     }
 
     /**
@@ -31,5 +31,12 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/config.php', self::SIGNATURE
         );
+    }
+
+    protected function bootPublisher()
+    {
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path(self::SIGNATURE.'.php'),
+        ], self::SIGNATURE.'-config');
     }
 }
